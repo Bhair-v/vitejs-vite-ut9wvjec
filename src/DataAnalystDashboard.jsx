@@ -1,229 +1,250 @@
-import React, { useState } from 'react';
 import {
-  Activity,
-  Database,
-  FileText,
-  Sliders,
-  Play,
-  CheckCircle,
-  Clock,
-  BarChart2,
-} from 'lucide-react';
+    Database,
+    FileText,
+    Clock,
+    Download,
+    CheckCircle,
+    MoreVertical,
+    PlusCircle,
+    BarChart2,
+    PlayCircle,
+    Activity // <--- Add this right here!
+  } from 'lucide-react';
 
 export default function DataAnalystDashboard() {
-  const [threshold, setThreshold] = useState(0.65);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const stats = [
+    { label: 'Datasets Available', value: '23', icon: Database, color: 'text-blue-600', bg: 'bg-blue-50' },
+    { label: 'Jobs Running', value: '3', icon: PlayCircle, color: 'text-orange-500', bg: 'bg-orange-50' },
+    { label: 'Completed Reports', value: '47', icon: FileText, color: 'text-emerald-500', bg: 'bg-emerald-50' },
+    { label: 'Queue Items', value: '3', icon: Clock, color: 'text-purple-500', bg: 'bg-purple-50' },
+  ];
 
-  const handleRunAnalysis = () => {
-    setIsAnalyzing(true);
-    setTimeout(() => setIsAnalyzing(false), 2000); // Mocks a 2-second analysis delay
-  };
+  const datasets = [
+    { title: 'Dengue Cases - Dhaka Division', status: 'Ready', statusTheme: 'bg-gray-900 text-white', records: '15,420', author: 'Dr. Tahmina Begum' },
+    { title: 'Air Quality Measurements', status: 'Ready', statusTheme: 'bg-gray-900 text-white', records: '8,760', author: 'Environmental Team' },
+    { title: 'Patient Survey Responses', status: 'Processing', statusTheme: 'bg-gray-100 text-gray-600', records: '3,240', author: 'Farida Rahman' },
+  ];
 
   return (
-    <div className="space-y-6">
+    <div className="p-8 bg-gray-50 min-h-screen font-sans text-gray-900">
       {/* HEADER */}
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-8">
         <div>
-          <h2 className="text-2xl font-bold text-gray-800">
-            Analysis Workspace
-          </h2>
-          <p className="text-sm text-gray-500">
-            Run volumetric analysis, monitor processing queues, and export
-            reports.
-          </p>
+          <h1 className="text-2xl font-bold text-gray-800">Data Analyst Dashboard</h1>
+          <p className="text-gray-500 text-sm mt-1">Welcome back, Kamal Hossain</p>
         </div>
+        <button className="flex items-center gap-2 bg-gray-900 text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+          <PlusCircle size={16} /> Start New Analysis
+        </button>
       </div>
 
-      {/* QUICK STATS CARDS */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {[
-          {
-            label: 'Available Datasets',
-            value: '4',
-            icon: Database,
-            color: 'text-blue-600',
-            bg: 'bg-blue-50',
-          },
-          {
-            label: 'Active Jobs',
-            value: isAnalyzing ? '1' : '0',
-            icon: Activity,
-            color: 'text-amber-600',
-            bg: 'bg-amber-50',
-          },
-          {
-            label: 'Completed Reports',
-            value: '12',
-            icon: FileText,
-            color: 'text-emerald-600',
-            bg: 'bg-emerald-50',
-          },
-          {
-            label: 'Storage Used',
-            value: '48%',
-            icon: BarChart2,
-            color: 'text-indigo-600',
-            bg: 'bg-indigo-50',
-          },
-        ].map((stat, index) => (
-          <div
-            key={index}
-            className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-4"
-          >
+      {/* TOP STATS */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        {stats.map((stat, i) => (
+          <div key={i} className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex items-center gap-4">
             <div className={`p-3 rounded-lg ${stat.bg}`}>
               <stat.icon className={`h-6 w-6 ${stat.color}`} />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-500">{stat.label}</p>
-              <p className="text-2xl font-bold text-gray-800">{stat.value}</p>
+              <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+              <p className="text-xs text-gray-500 font-medium">{stat.label}</p>
             </div>
           </div>
         ))}
       </div>
 
-      {/* MAIN GRID LAYOUT */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* LEFT COLUMN: The Volumetric Tool (Takes up 2 columns) */}
+        {/* LEFT COLUMN */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-semibold text-gray-800 flex items-center">
-                <Sliders className="h-5 w-5 mr-2 text-blue-600" />
-                Volumetric Segmentation Tool
-              </h3>
-              <span className="text-xs font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded">
-                Target: UTSW-Glioma
-              </span>
+          
+          {/* RECENT DATASETS */}
+          <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+            <div className="mb-6">
+              <h3 className="text-base font-semibold text-gray-900">Recent Datasets Available</h3>
+              <p className="text-xs text-gray-500">Latest datasets ready for analysis</p>
             </div>
-
-            <div className="grid grid-cols-2 gap-6">
-              {/* Controls */}
-              <div className="space-y-6 bg-gray-50 p-4 rounded-lg border border-gray-100">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Segmentation Threshold:{' '}
-                    <span className="text-blue-600 font-bold">{threshold}</span>
-                  </label>
-                  <input
-                    type="range"
-                    min="0.0"
-                    max="1.0"
-                    step="0.05"
-                    value={threshold}
-                    onChange={(e) => setThreshold(e.target.value)}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                  />
-                  <p className="text-xs text-gray-400 mt-2">
-                    Adjust probability threshold for voxel inclusion.
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-gray-200">
-                  <button
-                    onClick={handleRunAnalysis}
-                    disabled={isAnalyzing}
-                    className={`w-full py-2.5 rounded-lg font-medium flex items-center justify-center transition-colors ${
-                      isAnalyzing
-                        ? 'bg-amber-100 text-amber-700 cursor-not-allowed'
-                        : 'bg-blue-600 hover:bg-blue-700 text-white shadow-sm'
-                    }`}
-                  >
-                    {isAnalyzing ? (
-                      <>
-                        <Clock className="h-4 w-4 mr-2 animate-spin" />{' '}
-                        Processing Volume...
-                      </>
-                    ) : (
-                      <>
-                        <Play className="h-4 w-4 mr-2" /> Run Analysis
-                      </>
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              {/* Mock Visualizer / Output */}
-              <div className="border border-gray-200 rounded-lg bg-gray-900 flex flex-col items-center justify-center h-48 relative overflow-hidden">
-                {/* Simulated Grid Background */}
-                <div
-                  className="absolute inset-0 opacity-20"
-                  style={{
-                    backgroundImage:
-                      'linear-gradient(#374151 1px, transparent 1px), linear-gradient(90deg, #374151 1px, transparent 1px)',
-                    backgroundSize: '20px 20px',
-                  }}
-                ></div>
-
-                {isAnalyzing ? (
-                  <div className="text-blue-400 animate-pulse z-10 flex flex-col items-center">
-                    <Activity className="h-8 w-8 mb-2" />
-                    <span className="text-sm font-mono">
-                      Calculating Voxels...
-                    </span>
-                  </div>
-                ) : (
-                  <div className="z-10 text-center">
-                    <div className="text-emerald-400 text-3xl font-bold font-mono">
-                      14.2 cm³
+            <div className="space-y-4">
+              {datasets.map((ds, i) => (
+                <div key={i} className="p-4 rounded-lg border border-gray-200 flex justify-between items-center hover:bg-gray-50 transition-colors">
+                  <div>
+                    <div className="flex items-center gap-3 mb-1.5">
+                      <span className="font-semibold text-gray-900">{ds.title}</span>
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wide ${ds.statusTheme}`}>
+                        {ds.status}
+                      </span>
                     </div>
-                    <div className="text-gray-400 text-xs mt-1 uppercase tracking-widest">
-                      Tumor Volume
+                    <p className="text-xs text-gray-500">{ds.records} records • Uploaded by {ds.author}</p>
+                    <div className="flex gap-4 mt-3">
+                      <button className="text-xs font-semibold flex items-center gap-1.5 text-gray-700 hover:text-blue-600 bg-white border border-gray-200 px-3 py-1.5 rounded">
+                        <BarChart2 size={14} /> Analyze
+                      </button>
+                      <button className="text-xs font-semibold flex items-center gap-1.5 text-gray-700 hover:text-blue-600 bg-white border border-gray-200 px-3 py-1.5 rounded">
+                        <Download size={14} /> Download
+                      </button>
                     </div>
                   </div>
-                )}
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ANALYSIS JOBS RUNNING */}
+          <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+            <div className="mb-6">
+              <h3 className="text-base font-semibold text-gray-900">Analysis Jobs Running</h3>
+              <p className="text-xs text-gray-500">Currently processing tasks</p>
+            </div>
+            <div className="space-y-6">
+              {[
+                { name: 'Statistical Analysis - Dengue Correlation', progress: 75, eta: '10 min' },
+                { name: 'Machine Learning Model Training', progress: 45, eta: '25 min' },
+                { name: 'Data Cleaning & Validation', progress: 90, eta: '5 min' },
+              ].map((job, i) => (
+                <div key={i}>
+                  <div className="flex justify-between items-end mb-2">
+                    <div>
+                      <p className="text-sm font-semibold text-gray-900">{job.name}</p>
+                      <p className="text-[11px] text-gray-500 mt-0.5">ETA: {job.eta}</p>
+                    </div>
+                    <span className="text-[10px] font-bold bg-gray-900 text-white px-2 py-0.5 rounded uppercase tracking-wide">Running</span>
+                  </div>
+                  <div className="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden mt-2">
+                    <div className="bg-gray-900 h-full transition-all duration-500" style={{ width: `${job.progress}%` }}></div>
+                  </div>
+                  <p className="text-right text-[11px] text-gray-500 mt-1">{job.progress}%</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ACTIVITY TRENDS CHART */}
+          <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+             <div className="mb-6">
+              <h3 className="text-base font-semibold text-gray-900">Analysis Activity Trends</h3>
+              <p className="text-xs text-gray-500">Your analysis and dataset usage over time</p>
+            </div>
+            <div className="h-48 w-full relative pt-4">
+              {/* Simple SVG Chart Representation */}
+              <svg className="w-full h-full overflow-visible" viewBox="0 0 600 160" preserveAspectRatio="none">
+                  {/* Grid Lines */}
+                {[0, 1, 2, 3, 4].map(i => (
+                  <line key={i} x1="0" y1={i * 40} x2="100%" y2={i * 40} stroke="#f3f4f6" strokeWidth="1" strokeDasharray="4 4" />
+                ))}
+                {/* Y-Axis Labels */}
+                <text x="-15" y="5" className="text-[10px] fill-gray-400">28</text>
+                <text x="-15" y="45" className="text-[10px] fill-gray-400">21</text>
+                <text x="-15" y="85" className="text-[10px] fill-gray-400">14</text>
+                <text x="-15" y="125" className="text-[10px] fill-gray-400">7</text>
+                <text x="-15" y="165" className="text-[10px] fill-gray-400">0</text>
+                
+                {/* The Trend Line */}
+                <path 
+                  d="M0,130 L120,110 L240,95 L360,75 L480,55 L600,40" 
+                  fill="none" stroke="#8b5cf6" strokeWidth="2" 
+                  vectorEffect="non-scaling-stroke"
+                />
+                {/* Data Points */}
+                <circle cx="0" cy="130" r="4" fill="white" stroke="#8b5cf6" strokeWidth="2" />
+                <circle cx="120" cy="110" r="4" fill="white" stroke="#8b5cf6" strokeWidth="2" />
+                <circle cx="240" cy="95" r="4" fill="white" stroke="#8b5cf6" strokeWidth="2" />
+                <circle cx="360" cy="75" r="4" fill="white" stroke="#8b5cf6" strokeWidth="2" />
+                <circle cx="480" cy="55" r="4" fill="white" stroke="#8b5cf6" strokeWidth="2" />
+                <circle cx="600" cy="40" r="4" fill="white" stroke="#8b5cf6" strokeWidth="2" />
+              </svg>
+              {/* X-Axis Labels */}
+              <div className="flex justify-between mt-4 text-[11px] text-gray-500">
+                <span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span>
+              </div>
+              <div className="flex justify-center gap-4 mt-4 text-[11px] text-gray-500">
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full border-2 border-purple-500"></span> Analyses</span>
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full border-2 border-blue-400"></span> Datasets</span>
               </div>
             </div>
-          </div>
+          </section>
         </div>
 
-        {/* RIGHT COLUMN: Data Processing Queue */}
+        {/* RIGHT COLUMN */}
         <div className="space-y-6">
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 h-full">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">
-              Data Processing Queue
-            </h3>
-
+          
+          {/* COMPLETED REPORTS */}
+          <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+            <div className="mb-6">
+              <h3 className="text-base font-semibold text-gray-900">Completed Reports</h3>
+              <p className="text-xs text-gray-500">Recent analysis outputs</p>
+            </div>
             <div className="space-y-4">
-              <div className="p-3 border border-emerald-100 bg-emerald-50 rounded-lg">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm font-semibold text-gray-800">
-                    RadGAT Feature Extraction
-                  </span>
-                  <CheckCircle className="h-4 w-4 text-emerald-600" />
+              {[
+                { title: 'Dengue Outbreak Analysis Report', date: 'Mar 7, 2026', size: '2.4 MB' },
+                { title: 'Air Quality Trends Q1 2026', date: 'Mar 5, 2026', size: '1.8 MB' },
+                { title: 'Patient Demographics Summary', date: 'Mar 3, 2026', size: '890 KB' },
+              ].map((report, i) => (
+                <div key={i} className="pb-4 border-b border-gray-100 last:border-0 last:pb-0">
+                  <div className="flex items-start gap-3 mb-3">
+                    <FileText className="text-emerald-500 mt-0.5" size={16} />
+                    <div>
+                      <p className="text-sm font-medium text-gray-900 leading-tight">{report.title}</p>
+                      <p className="text-[11px] text-gray-500 mt-1">{report.date} • {report.size}</p>
+                    </div>
+                  </div>
+                  <button className="w-full py-2 border border-gray-200 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 hover:bg-gray-50 text-gray-700 transition-colors">
+                    <Download size={14} /> Download
+                  </button>
                 </div>
-                <p className="text-xs text-gray-500">Completed in 4m 12s</p>
-              </div>
+              ))}
+            </div>
+          </section>
 
-              <div className="p-3 border border-amber-100 bg-amber-50 rounded-lg relative overflow-hidden">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm font-semibold text-gray-800">
-                    Swin UNETR Pre-processing
-                  </span>
-                  <Activity className="h-4 w-4 text-amber-600 animate-pulse" />
+          {/* DATA PROCESSING QUEUE */}
+          <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+            <div className="mb-6">
+              <h3 className="text-base font-semibold text-gray-900">Data Processing Queue</h3>
+              <p className="text-xs text-gray-500">Pending tasks</p>
+            </div>
+            <div className="space-y-4">
+              {[
+                { id: 1, task: 'Import CSV - Patient Records', priority: 'High', pColor: 'bg-red-600 text-white' },
+                { id: 2, task: 'Data Validation - Lab Results', priority: 'Medium', pColor: 'bg-gray-900 text-white' },
+                { id: 3, task: 'Export Report - Monthly Summary', priority: 'Low', pColor: 'bg-white border border-gray-200 text-gray-600' },
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-3 p-3 border border-gray-100 rounded-lg">
+                  <div className="h-5 w-5 mt-0.5 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-[10px] font-bold">
+                    {item.id}
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-gray-900">{item.task}</p>
+                    <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wide mt-2 inline-block ${item.pColor}`}>
+                      {item.priority}
+                    </span>
+                  </div>
                 </div>
-                <p className="text-xs text-gray-500">
-                  Running: Modality Alignment
-                </p>
-                {/* Mini progress bar */}
-                <div className="w-full bg-amber-200 rounded-full h-1 mt-2">
-                  <div
-                    className="bg-amber-500 h-1 rounded-full"
-                    style={{ width: '45%' }}
-                  ></div>
+              ))}
+            </div>
+          </section>
+
+          {/* PERFORMANCE SUMMARY */}
+          <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+            <div className="mb-6">
+              <h3 className="text-base font-semibold text-gray-900">Performance Summary</h3>
+              <p className="text-xs text-gray-500">This month's highlights</p>
+            </div>
+            <div className="space-y-6">
+              <div className="flex items-center gap-4">
+                <div className="p-2.5 bg-blue-50 rounded-lg"><Activity size={20} className="text-blue-500" /></div>
+                <div>
+                  <p className="text-xs text-gray-500 font-medium">Avg. Processing Time</p>
+                  <p className="text-lg font-bold text-gray-900">12 min</p>
                 </div>
               </div>
-
-              <div className="p-3 border border-gray-100 bg-gray-50 rounded-lg opacity-60">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm font-semibold text-gray-800">
-                    UDA Domain Alignment
-                  </span>
-                  <Clock className="h-4 w-4 text-gray-400" />
+              <div className="flex items-center gap-4">
+                <div className="p-2.5 bg-emerald-50 rounded-lg"><FileText size={20} className="text-emerald-500" /></div>
+                <div>
+                  <p className="text-xs text-gray-500 font-medium">Success Rate</p>
+                  <p className="text-lg font-bold text-gray-900">98.5%</p>
                 </div>
-                <p className="text-xs text-gray-500">Queued</p>
               </div>
             </div>
-          </div>
+          </section>
+
         </div>
       </div>
     </div>
